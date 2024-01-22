@@ -1,3 +1,25 @@
-body{
-  background-color: black;
+:root {
+  --mono-4: rgb(16, 16, 16);
+  --mono-8: rgb(32, 32, 32);
+  --mono-16: rgb(64, 64, 64);
+  --mono-24: rgb(96, 96, 96);
+  --mono-32: rgb(128, 128, 128);
+  --mono-40: rgb(160, 160, 160);
+  --mono-56: rgb(192, 192, 192);
+  --mono-64: rgb(224, 224, 224);
+}
+body {
+  background-color: var(--mono-4);
+  margin: 8rem;
+}
+* {
+  color: var(--mono-64);
+  font-weight: 100;
+  font-family: "IBM plex mono";
+}
+p {
+  color: var(--mono-4);
+}
+textarea {
+  background-color: var(--mono-4);
 }
