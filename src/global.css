@@ -1,25 +1,67 @@
 :root {
-  --mono-4: rgb(16, 16, 16);
-  --mono-8: rgb(32, 32, 32);
-  --mono-16: rgb(64, 64, 64);
-  --mono-24: rgb(96, 96, 96);
-  --mono-32: rgb(128, 128, 128);
-  --mono-40: rgb(160, 160, 160);
-  --mono-56: rgb(192, 192, 192);
-  --mono-64: rgb(224, 224, 224);
+  --primary: rgba(16, 16, 16, 1);
+  --secondary: rgba(255, 255, 255, 0.1);
+  --tertiary: rgba(255, 255, 255, 0.25);
+  --accent: rgba(255, 255, 255, 0.8);
+}
+.clr-tertiary {
+  color: var(--tertiary);
+}
+::-webkit-scrollbar {
+  display: none;
 }
 body {
-  background-color: var(--mono-4);
-  margin: 8rem;
-}
-* {
-  color: var(--mono-64);
-  font-weight: 100;
-  font-family: "IBM plex mono";
+  background-color: var(--primary);
+  margin: 0px;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 p {
-  color: var(--mono-4);
+  font-size: 1rem;
+  line-height: 2rem;
+  color: var(--accent);
+  font-weight: 200;
+  font-family: "IBM Plex Mono", monospace;
+  margin: 0%;
+}
+.cont {
+  width: 25rem;
+}
+.cont * {
+  display: block;
+}
+.line {
+  height: 0.375rem;
+  width: 25%;
+  background-color: var(--secondary);
+  border-right: 1px solid var(--accent);
+}
+.box {
+  border: 1px solid var(--secondary);
+  height: 37.5rem;
+  padding: 1rem;
+  overflow-y: hidden;
 }
 textarea {
-  background-color: var(--mono-4);
+  background-color: var(--primary);
+  resize: none;
+  width: 100%;
+  border: none;
+  padding: 0px;
+  margin-top: 0.5rem;
+
+  color: var(--accent);
+  font-size: 1rem;
+  line-height: 2rem;
+}
+::placeholder {
+  color: var(--tertiary);
+  font-weight: 200;
+  font-size: 1rem;
+  line-height: 2rem;
+}
+textarea:focus {
+  outline: none;
 }
