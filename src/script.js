@@ -1,5 +1,13 @@
 // make different key
+
 let key = "rhugtkeldibnridrlerlgcrrdvneevit";
+
+// STEPS
+//
+// read text area on tasks
+// append completion system
+// sync data on new tab
+// add interactive state changes
 
 // storage access
 
@@ -27,18 +35,24 @@ function DOM_value(selector) {
   return document.querySelector(selector).value;
 }
 
-// User input
+// Update tasks
 
-function keyUpdate(input, output, key_code) {
-  document.querySelector(input).onkeydown = () => {
-    if (event.keyCode === key_code) {
-      chrome_set(key, DOM_value(input));
-      DOM_input(output, chrome_get(key));
-    }
-  };
-}
+document.querySelector("textarea").addEventListener("keydown", (e) => {
+  if (e.key == "Enter") {
+    console.log(e.key);
 
-keyUpdate("textarea", "p", 13);
+    let textarea = document.querySelector(".textarea");
+    let tasks = document.querySelector(".tasks");
+
+    let data = textarea.textContent;
+    let element = document.createElement("p");
+    element.textContent = data
+
+    tasks.appendChild(element);
+  }
+});
+
+// Percentage
 
 let date_start = Date.parse("17 Apr 2004 00:00:00 GMT+1");
 let date_now = Date.now();
@@ -48,4 +62,12 @@ let date_percent = ((date_now - date_start) / (date_end - date_start)) * 100;
 console.log(date_percent.toString() + "%");
 
 document.querySelector(".line").style.width = date_percent.toString() + "%";
-document.querySelector("p").innerHTML = (100 - date_percent).toPrecision(5) + "%";
+document.querySelector("p").innerHTML =
+  (100 - date_percent).toPrecision(5) + "%";
+
+// Focus Change update
+// box data is synced on new tabs
+
+chrome.windows.onFocusChanged.addListener(() => {
+  console.log("pos");
+});
