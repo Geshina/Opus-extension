@@ -4,10 +4,9 @@ let key = "rhugtkeldibnridrlerlgcrrdvneevit";
 
 // STEPS
 //
-// read text area on tasks
-// append completion system
-// sync data on new tab
-// add interactive state changes
+// two state transfer
+// on enter upload
+// on switch focus update ??
 
 // storage access
 
@@ -17,8 +16,11 @@ function chrome_set(key, data) {
 }
 
 async function chrome_get(key) {
-  let result = await chrome.storage.sync.get(key);
-  return result[key];
+  try {
+    let result = await chrome.storage.sync.get(key);
+    // console.log(result[key]);
+    return result[key];
+  } catch {}
 }
 
 // DOM
@@ -34,21 +36,26 @@ function DOM_output(selector) {
 function DOM_value(selector) {
   return document.querySelector(selector).value;
 }
+console.log(chrome_get(key));
 
 // Update tasks
+// Upload data
 
 document.querySelector("textarea").addEventListener("keydown", (e) => {
   if (e.key == "Enter") {
     console.log(e.key);
 
-    let textarea = document.querySelector(".textarea");
+    // transfer to textarea + append
+
+    let textarea = document.querySelector("textarea");
     let tasks = document.querySelector(".tasks");
+    let para = document.createElement("p");
+    para.innerHTML = textarea.value;
+    tasks.append(para);
 
-    let data = textarea.textContent;
-    let element = document.createElement("p");
-    element.textContent = data
+    // Sync
 
-    tasks.appendChild(element);
+    chrome_set(key, tasks.innerHTML);
   }
 });
 
@@ -59,14 +66,11 @@ let date_now = Date.now();
 let date_end = Date.parse("17 Apr 2080 00:00:00 GMT+1");
 let date_percent = ((date_now - date_start) / (date_end - date_start)) * 100;
 
-console.log(date_percent.toString() + "%");
-
 document.querySelector(".line").style.width = date_percent.toString() + "%";
 document.querySelector("p").innerHTML =
   (100 - date_percent).toPrecision(5) + "%";
 
 // Focus Change update
-// box data is synced on new tabs
 
 chrome.windows.onFocusChanged.addListener(() => {
   console.log("pos");
