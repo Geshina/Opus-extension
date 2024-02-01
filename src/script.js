@@ -9,6 +9,12 @@
 // make new key dumbo
 let key = "rhugtkeldibnridrlerlgcrrdvneevit";
 
+// VARIABLES
+
+let textarea = document.querySelector("textarea");
+let tasks = document.querySelector(".tasks");
+let task = document.querySelector(".task");
+
 // FUNCTIONS
 
 function datePercent() {
@@ -34,13 +40,9 @@ function chrome_set(key, data) {
   chrome.storage.sync.set(temp_obj);
 }
 
-// VARIABLES
-
-let textarea = document.querySelector("textarea");
-let tasks = document.querySelector(".tasks");
-
 //  STATIC
 
+// chrome_set(key, "");
 datePercent();
 progressBar(datePercent);
 
@@ -49,31 +51,36 @@ progressBar(datePercent);
   tasks.innerHTML = temp;
 })();
 
-
-document.querySelector("textarea").addEventListener("keydown", async (e) => {
+textarea.addEventListener("keydown", async (e) => {
   if (e.key == "Enter") {
-    console.log(e.key);
+    e.preventDefault();
 
     // transfer to textarea + append
-
     let textarea = document.querySelector("textarea");
-    let tasks = document.querySelector(".tasks");
     let para = document.createElement("p");
     para.innerHTML = textarea.value;
+    para.classList.add("task");
     tasks.append(para);
-    textarea.value = 8;
+    textarea.value = "";
 
     // Sync
-
     chrome_set(key, tasks.innerHTML);
     let data = await chrome.storage.sync.get(key);
     console.log(data[key]);
   }
 });
 
-// Percentage
+// state managment
+task.addEventListener("mouseover", (e) => {
+  task.classList.replace("task", "task-hover");
+});
+task.addEventListener("mouseout", (e) => {
+  task.classList.replace("task-hover", "task");
+});
 
-// Focus Change update
+task.addEventListener("click", (e) => {
+  task.classList.toggle("task-clicked");
+});
 
 chrome.windows.onFocusChanged.addListener(() => {
   // console.log("pos");
