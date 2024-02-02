@@ -13,8 +13,6 @@ let key = "rhugtkeldibnridrlerlgcrrdvneevit";
 
 let textarea = document.querySelector("textarea");
 let tasks = document.querySelector(".tasks");
-let task = document.querySelector(".task");
-
 // FUNCTIONS
 
 function datePercent() {
@@ -49,39 +47,54 @@ progressBar(datePercent);
 (async () => {
   let temp = await chrome_get(key);
   tasks.innerHTML = temp;
+  task_listeners();
 })();
 
-textarea.addEventListener("keydown", async (e) => {
+//  ENTER
+
+textarea.addEventListener("keydown", (e) => {
   if (e.key == "Enter") {
     e.preventDefault();
 
     // transfer to textarea + append
-    let textarea = document.querySelector("textarea");
     let para = document.createElement("p");
     para.innerHTML = textarea.value;
     para.classList.add("task");
     tasks.append(para);
     textarea.value = "";
 
-    // Sync
+    task_listeners();
     chrome_set(key, tasks.innerHTML);
-    let data = await chrome.storage.sync.get(key);
-    console.log(data[key]);
   }
 });
 
 // state managment
-task.addEventListener("mouseover", (e) => {
-  task.classList.replace("task", "task-hover");
-});
-task.addEventListener("mouseout", (e) => {
-  task.classList.replace("task-hover", "task");
-});
+// paramterize the shit out of this one
+function task_listeners() {
+  let task_all = document.querySelectorAll(".task");
 
-task.addEventListener("click", (e) => {
-  task.classList.toggle("task-clicked");
-});
+  task_all.forEach((task) => {
+    task.addEventListener("mouseover", (e) => {
+      task.classList.replace("task", "task-hover");
+    });
+    task.addEventListener("mouseout", (e) => {
+      task.classList.replace("task-hover", "task");
+    });
+    task.addEventListener("click", (e) => {
+      task.classList.toggle("task-clicked");
+      chrome_set(key, tasks.innerHTML);
+    });
+  });
+}
 
+//  FOCUS
+
+// not tab based only updates on alt + tab not ctrl + tab
 chrome.windows.onFocusChanged.addListener(() => {
-  // console.log("pos");
+  (async () => {
+    let temp = await chrome_get(key);
+    tasks.innerHTML = temp;
+    task_listeners();
+  })();  
+
 });
