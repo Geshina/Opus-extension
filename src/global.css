@@ -74,26 +74,32 @@ textarea {
   font-size: 1rem;
   line-height: 2rem;
 }
-textarea:focus {
+*:focus {
   outline: none;
 }
 
 /* Task States */
+.tasks > *{
+  animation: fade_in 150ms ;
+  cursor: pointer;
 
+}
 .task::before {
   content: "- [ ] ";
 }
-.task-hover {
-  cursor: pointer;
-}
-.task-hover::before {
+.task:hover::before,
+.task:focus::before {
   content: "  [-] ";
 }
 .task-clicked {
   color: var(--tertiary);
-  cursor: pointer;
 }
 .task-clicked::before {
   content: "- [X] ";
   color: var(--tertiary);
+}
+
+@keyframes fade_in {
+  from {opacity: 0;}
+  to {opacity: 1;}
 }

@@ -7,7 +7,7 @@
   "homepage_url": "https://github.com/Geshina/Opus-extension",
 
 
-  "permissions": ["storage"],
+  "permissions": ["storage","activeTab"],
 
   "chrome_url_overrides": {
     "newtab": "src/page.html"
