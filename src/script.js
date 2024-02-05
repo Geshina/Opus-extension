@@ -1,22 +1,23 @@
 //
 //  OPUS
 //
-//  Three states - static / enter / focus
+//  Three states - static / enter / change
 //  Static = on initial page load
 //  Enter = update tasks with textarea content
-//  Focus = sync data across tabs
+//  Change = upadating tabs when storage gets
 
 // VARIABLES
 
 let key = "mmjauwoofoink";
+let date_key = "mmjauwoofoinc";
 let textarea = document.querySelector("textarea");
 let tasks = document.querySelector(".tasks");
 
 //  STATIC
 
 // chrome_set(key, "");
-datePercent();
-progressBar(datePercent);
+// chrome_set(date_key, "");
+injectDates();
 
 (async () => {
   tasks.innerHTML = await chrome_get(key);
@@ -33,7 +34,7 @@ textarea.addEventListener("keydown", (e) => {
     let para = document.createElement("p");
     para.innerHTML = textarea.value;
     para.classList.add("task");
-    // para.setAttribute("tabIndex", "0");
+    para.setAttribute("tabIndex", "0");
     tasks.append(para);
     textarea.value = "";
 
@@ -42,16 +43,13 @@ textarea.addEventListener("keydown", (e) => {
   }
 });
 
-//  FOCUS
-
-chrome.tabs.onActivated.addListener(async () => {
+//  CHANGE
+chrome.storage.onChanged.addListener(async () => {
   tasks.innerHTML = await chrome_get(key);
+  let temp = await chrome_get(date_key);
+  console.log(temp);
   click_listener();
-});
-
-chrome.windows.onFocusChanged.addListener(async () => {
-  tasks.innerHTML = await chrome_get(key);
-  click_listener();
+  injectDates();
 });
 
 //  Functions
@@ -75,28 +73,42 @@ function click_listener() {
 // storage
 async function chrome_get(key) {
   let result = await chrome.storage.sync.get(key);
-  console.log("get" + result[key]);
   return result[key];
 }
 function chrome_set(key, data) {
   let temp_obj = { [key]: data };
   chrome.storage.sync.set(temp_obj);
-  console.log("set" + data);
 }
 
 // date
-// make using UTC and connect to popup
-function datePercent() {
-  let date_start = Date.parse("17 Apr 2004");
+
+async function datePercent() {
+  // fetch data
+  let temp_obj = await chrome_get(date_key);
+  let date_input = new Date(temp_obj.date__input);
+  let life_exp = parseInt(temp_obj.life__exp);
   let date_now = Date.now();
-  let date_end = Date.parse("17 Apr 2080");
-  return ((date_now - date_start) / (date_end - date_start)) * 100;
+
+  // to add years
+  let year = date_input.getFullYear();
+  let month = date_input.getMonth();
+  let day = date_input.getDay();
+
+  let life_exp_date = new Date(year + life_exp, month, day);
+  life_exp_date = Date.parse(life_exp_date);
+
+  let percent = ((date_now - date_input) / (life_exp_date - date_input)) * 100;
+
+  return percent;
 }
-function progressBar(datePercent) {
-  let date_percent = datePercent();
-  document.querySelector(".line").style.width = date_percent.toString() + "%";
-  document.querySelector(".percent").innerHTML =
-    (100 - date_percent).toPrecision(5) + "%";
+
+async function injectDates() {
+  let percent = await datePercent();
+  let percent_element = document.querySelector(".percent");
+  let line_element = document.querySelector(".line")
+
+  percent_element.innerHTML = 100 - parseFloat(percent).toPrecision(5) + "%";
+  line_element.style.width = percent + "%"
 }
 
 // cut + undo
