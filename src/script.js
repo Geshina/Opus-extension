@@ -26,7 +26,7 @@ progressBar(datePercent);
 //  ENTER
 
 textarea.addEventListener("keydown", (e) => {
-  if (e.key == "Enter") {
+  if (e.key === "Enter") {
     e.preventDefault();
 
     // transfer to textarea + append
@@ -42,7 +42,6 @@ textarea.addEventListener("keydown", (e) => {
   }
 });
 
-// chrome.storage.onChanged
 //  FOCUS
 
 chrome.tabs.onActivated.addListener(async () => {
@@ -76,18 +75,21 @@ function click_listener() {
 // storage
 async function chrome_get(key) {
   let result = await chrome.storage.sync.get(key);
+  console.log("get" + result[key]);
   return result[key];
 }
 function chrome_set(key, data) {
   let temp_obj = { [key]: data };
   chrome.storage.sync.set(temp_obj);
+  console.log("set" + data);
 }
 
 // date
+// make using UTC and connect to popup
 function datePercent() {
-  let date_start = Date.parse("17 Apr 2004 00:00:00 GMT+1");
+  let date_start = Date.parse("17 Apr 2004");
   let date_now = Date.now();
-  let date_end = Date.parse("17 Apr 2080 00:00:00 GMT+1");
+  let date_end = Date.parse("17 Apr 2080");
   return ((date_now - date_start) / (date_end - date_start)) * 100;
 }
 function progressBar(datePercent) {
