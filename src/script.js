@@ -44,13 +44,13 @@ textarea.addEventListener("keydown", (e) => {
 });
 
 //  CHANGE
-// fix  
-  chrome.storage.onChanged.addListener(async () => {
-    tasks.innerHTML = await chrome_get(key);
-    let temp = await chrome_get(date_key);
-    click_listener();
-    injectDates();
-  });
+// fix
+chrome.storage.onChanged.addListener(async () => {
+  tasks.innerHTML = await chrome_get(key);
+  let temp = await chrome_get(date_key);
+  click_listener();
+  injectDates();
+});
 
 //  Functions
 
@@ -63,9 +63,19 @@ function click_listener() {
     task.removeEventListener("click", handleClick);
     task.addEventListener("click", handleClick);
 
+    task.removeEventListener("keydown", handleFocusEnter);
+    task.addEventListener("keydown", handleFocusEnter);
+
     function handleClick() {
       task.classList.toggle("task-clicked");
       chrome_set(key, tasks.innerHTML);
+    }
+    function handleFocusEnter(e) {
+      if (document.activeElement === task && e.key === "Enter") {
+        e.preventDefault();
+        task.classList.toggle("task-clicked");
+        chrome_set(key, tasks.innerHTML);
+      }
     }
   });
 }
@@ -73,17 +83,16 @@ function click_listener() {
 // storage
 async function chrome_get(key) {
   let result = await chrome.storage.sync.get(key);
-  console.log("get" + result[key])
+  console.log("get" + result[key]);
   return result[key];
 }
 function chrome_set(key, data) {
   let temp_obj = { [key]: data };
   chrome.storage.sync.set(temp_obj);
-  console.log("set" + data)
+  console.log("set" + data);
 }
 
 // date
-
 async function datePercent() {
   // fetch data
   let temp_obj = await chrome_get(date_key);
@@ -107,10 +116,10 @@ async function datePercent() {
 async function injectDates() {
   let percent = await datePercent();
   let percent_element = document.querySelector(".percent");
-  let line_element = document.querySelector(".line")
+  let line_element = document.querySelector(".line");
 
   percent_element.innerHTML = (100 - percent).toFixed(3) + "%";
-  line_element.style.width = percent + "%"
+  line_element.style.width = percent + "%";
 }
 
 // cut + undo

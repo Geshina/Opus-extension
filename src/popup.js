@@ -19,18 +19,27 @@ function chrome_set(key, data) {
 let date_input = document.querySelector("#date-input");
 let life_exp = document.querySelector("#life-exp");
 
-date_input.addEventListener("keydown", function (e) {
-  if (e.key === "Enter") {
-    e.preventDefault();
-    data_obj.date__input = date_input.value;
-    chrome_set(date_key, data_obj);
-  }
-});
-
-life_exp.addEventListener("keydown", function (e) {
+document.addEventListener("keydown", function (e) {
   if (e.key === "Enter") {
     e.preventDefault();
     data_obj.life__exp = life_exp.value;
+    data_obj.date__input = date_input.value;
     chrome_set(date_key, data_obj);
+    console.log("popup")
   }
 });
+// date_input.addEventListener("keydown", function (e) {
+//   if (e.key === "Enter") {
+//     e.preventDefault();
+//     data_obj.date__input = date_input.value;
+//     chrome_set(date_key, data_obj);
+//   }
+// });
+
+// life_exp.addEventListener("keydown", function (e) {
+//   if (e.key === "Enter") {
+//     e.preventDefault();
+//     data_obj.life__exp = life_exp.value;
+//     chrome_set(date_key, data_obj);
+//   }
+// });
