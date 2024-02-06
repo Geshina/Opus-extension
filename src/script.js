@@ -44,13 +44,13 @@ textarea.addEventListener("keydown", (e) => {
 });
 
 //  CHANGE
-chrome.storage.onChanged.addListener(async () => {
-  tasks.innerHTML = await chrome_get(key);
-  let temp = await chrome_get(date_key);
-  console.log(temp);
-  click_listener();
-  injectDates();
-});
+// fix  
+  chrome.storage.onChanged.addListener(async () => {
+    tasks.innerHTML = await chrome_get(key);
+    let temp = await chrome_get(date_key);
+    click_listener();
+    injectDates();
+  });
 
 //  Functions
 
@@ -73,11 +73,13 @@ function click_listener() {
 // storage
 async function chrome_get(key) {
   let result = await chrome.storage.sync.get(key);
+  console.log("get" + result[key])
   return result[key];
 }
 function chrome_set(key, data) {
   let temp_obj = { [key]: data };
   chrome.storage.sync.set(temp_obj);
+  console.log("set" + data)
 }
 
 // date
@@ -107,7 +109,7 @@ async function injectDates() {
   let percent_element = document.querySelector(".percent");
   let line_element = document.querySelector(".line")
 
-  percent_element.innerHTML = 100 - parseFloat(percent).toPrecision(5) + "%";
+  percent_element.innerHTML = (100 - percent).toFixed(3) + "%";
   line_element.style.width = percent + "%"
 }
 
@@ -123,7 +125,7 @@ document.addEventListener("keydown", (e) => {
       element.remove();
     });
 
-    chrome_set(key, textarea.innerHTML);
+    chrome_set(key, tasks.innerHTML);
     pressedKeys = {};
   }
 });
