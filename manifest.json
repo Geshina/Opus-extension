@@ -6,7 +6,7 @@
   "description": "lmao",
   "homepage_url": "https://github.com/Geshina/Opus-extension",
 
-  "permissions": ["storage", "activeTab"],
+  "permissions": ["storage"],
 
   "chrome_url_overrides": {
     "newtab": "src/page.html"

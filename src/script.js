@@ -47,7 +47,6 @@ textarea.addEventListener("keydown", (e) => {
 // fix
 chrome.storage.onChanged.addListener(async () => {
   tasks.innerHTML = await chrome_get(key);
-  let temp = await chrome_get(date_key);
   click_listener();
   injectDates();
 });
@@ -83,7 +82,6 @@ function click_listener() {
 // storage
 async function chrome_get(key) {
   let result = await chrome.storage.sync.get(key);
-  console.log("get" + result[key]);
   return result[key];
 }
 function chrome_set(key, data) {

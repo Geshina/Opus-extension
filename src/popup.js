@@ -25,7 +25,6 @@ document.addEventListener("keydown", function (e) {
     data_obj.life__exp = life_exp.value;
     data_obj.date__input = date_input.value;
     chrome_set(date_key, data_obj);
-    console.log("popup")
   }
 });
 // date_input.addEventListener("keydown", function (e) {
