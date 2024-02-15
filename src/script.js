@@ -18,7 +18,7 @@ let tasks = document.querySelector(".tasks");
 // chrome_set(key, "");
 // chrome_set(date_key, "");
 injectDates();
-
+  
 (async () => {
   tasks.innerHTML = await chrome_get(key);
   click_listener();

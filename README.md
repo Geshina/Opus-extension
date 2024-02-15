@@ -7,4 +7,5 @@ The github repository of the Opus repository serving as a website
  - [ ] editing existing tasks with textarea
  - [ ] general cleanup
  - [ ] try/catch for errors
- - [-] animations
+ - [ ] animations <>
+ - [ ] Google calendar API for 2.0
